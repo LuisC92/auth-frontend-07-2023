@@ -12,7 +12,7 @@ const SignUp = () => {
   const navigate = useNavigate()
 
   const createUser = (data) => {
-    // console.log(data);
+    console.log(data);
     api
       .post("/auth/sign-up", data)
       .then((response) => {

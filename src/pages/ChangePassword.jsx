@@ -25,7 +25,11 @@ const ChangePassword = () => {
       };
       api
         .post("/password/change-password", data, config)
-        .then((response) => console.log(response))
+        .then((response) => {
+          if(response.status === 200){
+            alert("Password changed")   
+          }
+        })
         .catch((error) => console.error(error));
     } else {
       setError("The new password is different from the repeat password");

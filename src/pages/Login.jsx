@@ -1,24 +1,48 @@
 import api from "../api/api";
 import { useForm } from "react-hook-form";
-import Cookies from "js-cookie"
+import Cookies from "js-cookie";
+import {useNavigate} from "react-router-dom"
+import { useContext } from "react";
+import UserContext from "../contexts/UserContext";
 
 const Login = () => {
+
+  const {setUser} = useContext(UserContext);
+
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
+  const navigate =useNavigate()
+
   const loginUser = (data) => {
     // console.log(data)
     api
       .post("/auth/login", data)
       .then((response) => {
-        //! save token in cookies
-        Cookies.set("user_token", response.data.token)
-        // //! save token in local storage
-        // localStorage.setItem("user_token", response.data.token)
-        console.log(response)
+        if(response.status === 200){
+          //! save token in cookies
+          Cookies.set("user_token", response.data.token);
+          // //! save token in local storage
+          // localStorage.setItem("user_token", response.data.token)
+          let config = {
+            headers: {
+              Authorization: "Bearer " + response.data.token,
+            },
+          };
+          api.get("/user",config)
+            .then(response => {
+              if(response.status === 200){
+                setUser(response.data)
+                navigate("/")
+              }
+            })
+            .catch((error) => console.error(error));
+        }
+
       })
       .catch((error) => console.error(error));
   };
@@ -42,6 +66,7 @@ const Login = () => {
         <br />
 
         <input
+          placeholder="password"
           type="password"
           {...register("password", { required: "password is required" })}
           aria-invalid={errors.password ? "true" : "false"}
