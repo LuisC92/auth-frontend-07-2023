@@ -31,6 +31,7 @@ const SignUp = () => {
   return (
     <div>
       <h1>Sign-Up</h1>
+      <h2>Public Route</h2>
       <form onSubmit={handleSubmit(createUser)}>
         <label>email:</label>
         <br />

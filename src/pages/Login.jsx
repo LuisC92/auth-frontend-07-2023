@@ -1,14 +1,14 @@
 import api from "../api/api";
 import { useForm } from "react-hook-form";
 import Cookies from "js-cookie";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import UserContext from "../contexts/UserContext";
+import AuthContext from "../contexts/AuthContext";
 
 const Login = () => {
-
-  const {setUser} = useContext(UserContext);
-
+  const { setUser } = useContext(UserContext);
+  const { setIsAuthenticated } = useContext(AuthContext);
 
   const {
     register,
@@ -16,14 +16,31 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  const navigate =useNavigate()
+  const navigate = useNavigate();
 
   const loginUser = (data) => {
     // console.log(data)
+    //! fake data for permissions and roles
+    // console.log({
+    //   id: "1",
+    //   name: "robin",
+    //   permissions: ["analyze"],
+    //   roles: ["user"],
+    // });
+    // setUser({
+    //   id: "1",
+    //   name: "robin",
+    //   permissions: ["analyze"],
+    //   roles: ["user"],
+    // });
+    // setIsAuthenticated(true);
+    // navigate("/");
+    //! fake data for permissions and roles
+
     api
       .post("/auth/login", data)
       .then((response) => {
-        if(response.status === 200){
+        if (response.status === 200) {
           //! save token in cookies
           Cookies.set("user_token", response.data.token);
           // //! save token in local storage
@@ -33,16 +50,18 @@ const Login = () => {
               Authorization: "Bearer " + response.data.token,
             },
           };
-          api.get("/user",config)
-            .then(response => {
-              if(response.status === 200){
-                setUser(response.data)
-                navigate("/")
+
+          api
+            .get("/user", config)
+            .then((response) => {
+              if (response.status === 200) {
+                setUser(response.data);
+                setIsAuthenticated(true);
+                navigate("/");
               }
             })
             .catch((error) => console.error(error));
         }
-
       })
       .catch((error) => console.error(error));
   };
@@ -50,6 +69,7 @@ const Login = () => {
   return (
     <div>
       <h1>Login</h1>
+      <h2>Public Route</h2>
       <form onSubmit={handleSubmit(loginUser)}>
         <label>Email:</label>
         <br />

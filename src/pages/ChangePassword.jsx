@@ -26,8 +26,8 @@ const ChangePassword = () => {
       api
         .post("/password/change-password", data, config)
         .then((response) => {
-          if(response.status === 200){
-            alert("Password changed")   
+          if (response.status === 200) {
+            alert("Password changed");
           }
         })
         .catch((error) => console.error(error));
@@ -39,6 +39,7 @@ const ChangePassword = () => {
   return (
     <div>
       <h1>Change Password</h1>
+      <h2>Protected by user auth</h2>
       <form onSubmit={handleSubmit(changePassword)}>
         <label>Current Password:</label>
         <br />

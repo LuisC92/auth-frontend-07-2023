@@ -22,6 +22,7 @@ const ForgetPassword = () => {
   return (
     <div>
       <h1>Forget Password</h1>
+      <h2>Public Route</h2>
       <form onSubmit={handleSubmit(forgetPassword)}>
         <label>Email:</label>
         <br />
