@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import UserContext from "../contexts/UserContext";
 import AuthContext from "../contexts/AuthContext";
+import {yupResolver} from "@hookform/resolvers/yup"
+import userSchema from "../schemas/user-schema";
 
 const Login = () => {
   const { setUser } = useContext(UserContext);
@@ -14,7 +16,9 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    resolver: yupResolver(userSchema)
+  });
 
   const navigate = useNavigate();
 

@@ -6,6 +6,7 @@ import ChangePassword from "./pages/ChangePassword";
 import HomePage from "./pages/HomePage";
 import ForgetPassword from "./pages/ForgetPassword";
 import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
 import NavBar from "./components/NavBar";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import AuthContext from "./contexts/AuthContext";
@@ -28,6 +29,7 @@ function App() {
             <ProtectedRoute redirectPath="/login" isAllowed={isAuthenticated && user} />
           }
           >
+          <Route path="/profile" element={<Profile />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/change-password" element={<ChangePassword />} />
         </Route>
